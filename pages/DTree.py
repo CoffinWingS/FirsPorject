@@ -10,32 +10,45 @@ st.header("Decision Tree for classification")
 df = pd.read_csv("./data/shopping.csv")
 st.write(df.head(10))
 
-features=['Age', 'Gender', 'Item Purchased', 'Location']
-X = df.drop('Category',axis=1)
+# ====== เตรียม Features และ Target ======
+X = df.drop('Category', axis=1)
 y = df['Category']
 
-x_train,x_test,y_train,y_test =train_test_split(X,y,test_size=0.3,random_state=200)
+# แปลง categorical ให้เป็นตัวเลข
+X = pd.get_dummies(X)
+
+# แบ่ง train/test
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=200)
+
+# ====== สร้างและเทรนโมเดล ======
 ModelDtree = DecisionTreeClassifier()
-dtree =ModelDtree.fit(x_train,y_train)
-st.subheader("กรุณาป้อนข้อมูลเพื่อพยากรณ์")
-spW=st.number_input('Insert sepalwidth')
-spL=st.number_input('Insert sepallength')
-ptW=st.number_input('Insert petalwidth')
-ptL=st.number_input('Insert petallength')
+dtree = ModelDtree.fit(x_train, y_train)
+
+# ====== Input จากผู้ใช้ (ตรงนี้คุณต้องแก้ให้เข้ากับ features จริง ๆ) ======
+st.subheader("กรุณาป้อนข้อมูลเพื่อพยากรณ์ (ทดสอบ)")
+# ตัวอย่าง input สมมติ (4 ค่า) — คุณต้องแก้ตาม features ของ dataset
+f1 = st.number_input('Age')
+f2 = st.selectbox('Gender', ['Male', 'Female'])
+f3 = st.text_input('Item Purchased')
+f4 = st.text_input('Location')
+
 if st.button("พยากรณ์"):
-    x_input=[[spW,spL,ptW,ptL]] # ใส่ข้อมูลสำหรับการจำแนกข้อมูล
-    y_predict2=dtree.predict(x_input)
-    st.write(y_predict2)
-    st.button("ไม่พยากรณ์")
-else:
-    st.button("ไม่พยากรณ์")
+    # สร้าง dataframe 1 แถวที่เหมือน X
+    input_data = pd.DataFrame([[f1, f2, f3, f4]], columns=['Age','Gender','Item Purchased','Location'])
+    input_data = pd.get_dummies(input_data)
 
-y_predict=dtree.predict(x_test)   
-score = accuracy_score(y_test, y_predict)  
-st.write(f'ความแม่นยำในการพยากรณ์{(score*100)} %')  
+    # align columns ให้ตรงกับ X ที่เทรน
+    input_data = input_data.reindex(columns=X.columns, fill_value=0)
 
+    y_predict2 = dtree.predict(input_data)
+    st.write("ผลการพยากรณ์:", y_predict2[0])
+
+# ====== Accuracy ======
+y_predict = dtree.predict(x_test)
+score = accuracy_score(y_test, y_predict)
+st.write(f'ความแม่นยำในการพยากรณ์ {score*100:.2f} %')
+
+# ====== Plot Tree ======
 fig, ax = plt.subplots(figsize=(12, 8))
-tree.plot_tree(dtree, feature_names=features, ax=ax)
-
+tree.plot_tree(dtree, feature_names=X.columns, class_names=y.unique(), filled=True, ax=ax)
 st.pyplot(fig)
-#tree.plot_tree(dtree, feature_names=features)
