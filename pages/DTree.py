@@ -16,8 +16,8 @@ df = pd.read_csv("./data/shopping.csv")
 st.write(df.head(10))
 
 # ====== เตรียม Features และ Target ======
-X = df.drop('Category', axis=1)
-y = df['Category']
+X = df.drop('Item Purchasedy', axis=1)
+y = df['Item Purchased']
 
 # แปลง categorical ให้เป็น dummy ตัวเลข
 X = pd.get_dummies(X)
