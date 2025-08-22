@@ -11,8 +11,8 @@ df = pd.read_csv("./data/shopping.csv")
 st.write(df.head(10))
 
 features=['Age', 'Gender', 'Item Purchased', 'Location']
-X = df.drop('variety',axis=1)
-y = df['variety']
+X = df.drop('Category',axis=1)
+y = df['Category']
 
 x_train,x_test,y_train,y_test =train_test_split(X,y,test_size=0.3,random_state=200)
 ModelDtree = DecisionTreeClassifier()
