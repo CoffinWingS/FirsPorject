@@ -28,6 +28,20 @@ x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 st.subheader("Class Distribution")
 st.write(y.value_counts())   # ดูจำนวนแต่ละคลาส
 
+
+
+# ====== สร้างและเทรนโมเดล ======
+ModelDtree = DecisionTreeClassifier()
+dtree = ModelDtree.fit(x_train, y_train)
+
+# ====== Input จากผู้ใช้ ======
+st.subheader("กรุณาป้อนข้อมูล (ใช้ตัวเลขแทนค่า)")
+
+f1 = st.number_input('Age', min_value=1, max_value=100, step=1)
+f2 = st.number_input('Gender (1=Male, 2=Female)', min_value=1, max_value=2, step=1)
+f3 = st.number_input('Size (1=S, 2=M, 3=L, 4=XL)', min_value=1, max_value=4, step=1)
+f4 = st.number_input('Season (1=Winter, 2=Spring, 3=Summer, 4=Fall)', min_value=1, max_value=4, step=1)
+
 # ====== Debug Input Data ======
 if st.button("Debug Input"):
     input_data = pd.DataFrame([[f1, f2, f3, f4]], 
@@ -42,18 +56,6 @@ if st.button("Debug Input"):
     st.write("🔍 Input data after processing:")
     st.write(input_data)
 
-
-# ====== สร้างและเทรนโมเดล ======
-ModelDtree = DecisionTreeClassifier()
-dtree = ModelDtree.fit(x_train, y_train)
-
-# ====== Input จากผู้ใช้ ======
-st.subheader("กรุณาป้อนข้อมูล (ใช้ตัวเลขแทนค่า)")
-
-f1 = st.number_input('Age', min_value=1, max_value=100, step=1)
-f2 = st.number_input('Gender (1=Male, 2=Female)', min_value=1, max_value=2, step=1)
-f3 = st.number_input('Size (1=S, 2=M, 3=L, 4=XL)', min_value=1, max_value=4, step=1)
-f4 = st.number_input('Season (1=Winter, 2=Spring, 3=Summer, 4=Fall)', min_value=1, max_value=4, step=1)
 
 if st.button("พยากรณ์"):
     # แปลงตัวเลขที่ user กรอก -> ค่า string จริง
