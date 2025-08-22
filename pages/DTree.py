@@ -24,6 +24,24 @@ X = pd.get_dummies(X)
 
 # แบ่ง train/test
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=200)
+# ====== ตรวจสอบ distribution ของ target ======
+st.subheader("Class Distribution")
+st.write(y.value_counts())   # ดูจำนวนแต่ละคลาส
+
+# ====== Debug Input Data ======
+if st.button("Debug Input"):
+    input_data = pd.DataFrame([[f1, f2, f3, f4]], 
+                              columns=['Age','Gender','Size','Season'])
+    
+    # one-hot encoding
+    input_data = pd.get_dummies(input_data)
+
+    # align columns
+    input_data = input_data.reindex(columns=X.columns, fill_value=0)
+
+    st.write("🔍 Input data after processing:")
+    st.write(input_data)
+
 
 # ====== สร้างและเทรนโมเดล ======
 ModelDtree = DecisionTreeClassifier()
