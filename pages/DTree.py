@@ -30,7 +30,7 @@ st.subheader("กรุณาป้อนข้อมูลเพื่อพย
 f1 = st.number_input('Age')
 f2 = st.selectbox('Gender', ['Male', 'Female'])
 f3 = st.text_input('Item Purchased')
-f4 = st.text_input('Location')
+f4 = st.text_input('Season')
 
 if st.button("พยากรณ์"):
     # สร้าง dataframe 1 แถวที่เหมือน X
