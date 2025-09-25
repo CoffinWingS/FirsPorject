@@ -1,21 +1,26 @@
 import streamlit as st
 
-# ตั้งชื่อหน้า
-st.set_page_config(page_title="Customer Purchase Prediction", page_icon="🛍️", layout="centered")
+st.set_page_config(page_title="Customer Purchase Prediction", layout="wide")
 
-# ส่วนหัว
-st.title("🛍️ Customer Purchase Prediction")
-st.subheader("เลือกโมเดลที่ต้องการใช้งานจากแถบด้านซ้าย")
+# ====== Sidebar ======
+st.sidebar.title("เลือกโมเดลสำหรับพยากรณ์")
+model_option = st.sidebar.radio(
+    "โมเดลที่ต้องการใช้:",
+    ("KNN", "Random Forest", "Naive Bayes")
+)
 
-st.write("""
-ยินดีต้อนรับสู่ระบบพยากรณ์การซื้อของลูกค้า  
-คุณสามารถเลือกโมเดล Machine Learning ที่ต้องการทดสอบได้จาก **Sidebar**  
-- 🔹 KNN  
-- 🔹 Random Forest  
-- 🔹 Naive Bayes  
-""")
+# ====== Main Page ======
+st.title("ระบบพยากรณ์การซื้อของลูกค้า")
+st.write("ยินดีต้อนรับ! กรุณาเลือกโมเดลจากแถบด้านซ้ายเพื่อเริ่มพยากรณ์ข้อมูลลูกค้า")
 
-st.info("➡️ ไปที่แถบด้านซ้าย (Sidebar) เพื่อเลือกโมเดลที่ต้องการ", icon="ℹ️")
-
-st.image("https://cdn-icons-png.flaticon.com/512/2331/2331954.png", width=200)
+# ====== นำเข้าโมเดลที่ผู้ใช้เลือก ======
+if model_option == "KNN":
+    st.write("คุณเลือก KNN Model")
+    import KNN  # เรียกไฟล์ KNN.py
+elif model_option == "Random Forest":
+    st.write("คุณเลือก Random Forest Model")
+    import DForest  # เรียกไฟล์ DForest.py
+elif model_option == "Naive Bayes":
+    st.write("คุณเลือก Naive Bayes Model")
+    import Bay  # เรียกไฟล์ Bay.py
 
