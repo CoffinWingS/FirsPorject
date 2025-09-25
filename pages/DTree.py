@@ -12,7 +12,7 @@ gender_map = {1: 'Male', 2: 'Female'}
 size_map = {1: 'S', 2: 'M', 3: 'L', 4: 'XL'}
 season_map = {1: 'Winter', 2: 'Spring', 3: 'Summer', 4: 'Fall'}
 
-st.header("Decision Tree for Classification")
+st.header("Decision Tree for classification")
 df = pd.read_csv("./data/shopping.csv")
 st.write(df.head(10))
 
@@ -43,7 +43,8 @@ f3 = st.number_input('Size (1=S, 2=M, 3=L, 4=XL)', min_value=1, max_value=4, ste
 f4 = st.number_input('Season (1=Winter, 2=Spring, 3=Summer, 4=Fall)', min_value=1, max_value=4, step=1)
 
 if st.button("Debug Input"):
-    input_data = pd.DataFrame([[f1, f2, f3, f4]], columns=['Age','Gender','Size','Season'])
+    input_data = pd.DataFrame([[f1, f2, f3, f4]], 
+                              columns=['Age','Gender','Size','Season'])
     input_data = pd.get_dummies(input_data)
     input_data = input_data.reindex(columns=X.columns, fill_value=0)
     st.write("🔍 Input data after processing:")
@@ -59,31 +60,29 @@ if st.button("พยากรณ์"):
     input_data = pd.get_dummies(input_data)
     input_data = input_data.reindex(columns=X.columns, fill_value=0)
     y_predict2 = dtree.predict(input_data)
-    st.write("🎯 ผลการพยากรณ์:", y_predict2[0])
+    st.write("ผลการพยากรณ์:", y_predict2[0])
 
 # ====== Accuracy ======
 y_predict = dtree.predict(x_test)
 score = accuracy_score(y_test, y_predict)
-st.write(f'✅ ความแม่นยำในการพยากรณ์ {score*100:.2f} %')
+st.write(f'ความแม่นยำในการพยากรณ์ {score*100:.2f} %')
 
 # ====== Plot Tree ======
 fig, ax = plt.subplots(figsize=(12, 8))
 tree.plot_tree(dtree, feature_names=X.columns, class_names=y.unique(), filled=True, ax=ax)
 st.pyplot(fig)
 
-# ====== Boxplot แบบให้ user เลือก ======
-st.subheader("Boxplot Visualization")
-columns_list = ['Age','Size','Season','Purchase Amount','Location','Shipping Type','Item Purchased']
-selected_column = st.selectbox("เลือกคอลัมน์ที่ต้องการดู Boxplot", columns_list)
+# ====== Boxplot แบบเลือกคอลัมน์ ======
+st.subheader("📊 Boxplot Viewer")
+box_columns = ['Age', 'Size', 'Season', 'Purchase Amount', 'Location', 'Shipping Type', 'Item Purchased']
+selected_column = st.selectbox("เลือกคอลัมน์เพื่อดู Boxplot", box_columns)
 
-fig2, ax2 = plt.subplots(figsize=(8,4))
-# ถ้าเป็น numeric
-if selected_column in ['Age','Size','Purchase Amount']:
+fig2, ax2 = plt.subplots(figsize=(10, 6))
+if pd.api.types.is_numeric_dtype(df[selected_column]):
     sns.boxplot(y=df[selected_column], ax=ax2)
 else:
-    # categorical
-    sns.boxplot(x=df[selected_column], y=df['Purchase Amount'], ax=ax2)
-    plt.xticks(rotation=45)
+    sns.boxplot(x=df[selected_column].astype('category').cat.codes, y=df['Purchase Amount'], ax=ax2)
+    ax2.set_xticks(range(len(df[selected_column].unique())))
+    ax2.set_xticklabels(df[selected_column].unique(), rotation=45)
 
-ax2.set_title(f'Boxplot of {selected_column}')
 st.pyplot(fig2)
