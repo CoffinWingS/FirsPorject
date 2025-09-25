@@ -5,6 +5,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 def run_knn():
     st.header("🎩 K-Nearest Neighbors (KNN) for Classification 🎩")
@@ -82,3 +83,19 @@ def run_knn():
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=knn.classes_)
     disp.plot(ax=ax, cmap="Blues", colorbar=False)
     st.pyplot(fig)
+
+    # ===================== Boxplot Explorer =====================
+    st.subheader("📊 Boxplot Explorer")
+
+    # รายการตัวแปรให้เลือก
+    columns = ['Age', 'Size', 'Season', 'Purchase Amount', 'Location', 'Shipping Type', 'Item Purchased']
+    selected_column = st.selectbox("เลือกตัวแปรเพื่อดู Boxplot", columns)
+
+    plt.figure(figsize=(10, 6))
+    if selected_column in ['Age', 'Size', 'Season', 'Purchase Amount']:
+        sns.boxplot(y=df[selected_column])
+    else:
+        # แปลง categorical เป็น codes เพื่อ plot
+        sns.boxplot(x=df[selected_column].astype('category').cat.codes)
+        plt.xticks(rotation=45)
+    st.pyplot(plt)
