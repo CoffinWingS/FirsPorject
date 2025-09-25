@@ -8,7 +8,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDis
 # ==========================
 # โหลดข้อมูล
 # ==========================
-st.header("K-Nearest Neighbors (KNN) for Classification")
+st.header("🎩K-Nearest Neighbors (KNN) for Classification🎩")
 df = pd.read_csv("./data/shopping.csv")
 st.write(df.head(10))
 
@@ -23,7 +23,7 @@ X = pd.get_dummies(X)
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=200)
 
 # ====== สร้างและเทรนโมเดล KNN ======
-ModelKNN = KNeighborsClassifier(n_neighbors=7)   # ค่า k สามารถปรับได้
+ModelKNN = KNeighborsClassifier(n_neighbors=3)   # ค่า k = (สามารถปรับได้)
 knn = ModelKNN.fit(x_train, y_train)
 
 # ====== Input จากผู้ใช้ ======
