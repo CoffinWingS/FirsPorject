@@ -78,7 +78,7 @@ def run_bayes():
     # เมื่อกดปุ่มพยากรณ์
     if st.button("พยากรณ์"):
         input_data = pd.DataFrame([[f1, f2, f3, f4, f5, f6, f7]],
-                                  columns=['Age','Size','Season','Purchase Amount','Location','Shipping Type','Item Purchased'])
+                                  columns=['Age','Size','Season','Location','Shipping Type','Item Purchased'])
         
         # one-hot encode input และ align columns กับ X
         input_data = pd.get_dummies(input_data)
