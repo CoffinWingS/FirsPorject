@@ -84,18 +84,17 @@ def run_knn():
     disp.plot(ax=ax, cmap="Blues", colorbar=False)
     st.pyplot(fig)
 
-    # ===================== Boxplot Explorer =====================
+    # =========================
+    # Boxplot Explorer
+    # =========================
     st.subheader("📊 Boxplot Explorer")
+    box_columns = ['Age', 'Size', 'Season', 'Purchase Amount', 'Location', 'Shipping Type', 'Item Purchased']
+    selected_column = st.selectbox("เลือกตัวแปรเพื่อดู Boxplot", box_columns)
 
-    # รายการตัวแปรให้เลือก
-    columns = ['Age', 'Size', 'Season', 'Purchase Amount', 'Location', 'Shipping Type', 'Item Purchased']
-    selected_column = st.selectbox("เลือกตัวแปรเพื่อดู Boxplot", columns)
-
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10,6))
     if selected_column in ['Age', 'Size', 'Season', 'Purchase Amount']:
         sns.boxplot(y=df[selected_column])
     else:
-        # แปลง categorical เป็น codes เพื่อ plot
         sns.boxplot(x=df[selected_column].astype('category').cat.codes)
-        plt.xticks(rotation=45)
+    plt.xticks(rotation=45)
     st.pyplot(plt)
