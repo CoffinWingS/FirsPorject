@@ -12,6 +12,10 @@ st.header("🎩K-Nearest Neighbors (KNN) for Classification🎩")
 df = pd.read_csv("./data/shopping.csv")
 st.write(df.head(10))
 
+def run_knn():
+    import streamlit as st
+    st.header("KNN Prediction")
+
 # ====== เตรียม Features และ Target ======
 X = df.drop('Category', axis=1)
 y = df['Category']
