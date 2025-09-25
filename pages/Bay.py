@@ -8,12 +8,9 @@ from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDis
 # ==========================
 # โหลดข้อมูล
 # ==========================
-st.header("🕶️Naive Bayes for Classification🕶️")
+st.header("Naive Bayes for Classification")
 df = pd.read_csv("./data/shopping.csv")
 st.write(df.head(10))
-
-def run_Bay():
-    st.header("Bay Prediction")
 
 # ====== เตรียม Features และ Target ======
 X = df.drop('Category', axis=1)
