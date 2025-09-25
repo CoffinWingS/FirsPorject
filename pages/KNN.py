@@ -84,24 +84,22 @@ def run_knn():
     disp.plot(ax=ax, cmap="Blues", colorbar=False)
     st.pyplot(fig)
 
-  # =========================
-# Boxplot Explorer
-# =========================
-st.subheader("📊 Boxplot Explorer")
-box_columns = ['Age', 'Size', 'Season', 'Purchase Amount', 'Location', 'Shipping Type', 'Item Purchased']
-selected_column = st.selectbox("เลือกตัวแปรเพื่อดู Boxplot", box_columns)
+    # =========================
+    # Boxplot Explorer
+    # =========================
+    st.subheader("📊 Boxplot Explorer")
+    box_columns = ['Age', 'Size', 'Season', 'Purchase Amount', 'Location', 'Shipping Type', 'Item Purchased']
+    selected_column = st.selectbox("เลือกตัวแปรเพื่อดู Boxplot", box_columns)
 
-plt.figure(figsize=(12,6))
-if selected_column in ['Age', 'Size', 'Season', 'Purchase Amount']:
-    # Numeric columns
-    sns.boxplot(y=df[selected_column])
-    plt.ylabel(selected_column)
-else:
-    # Categorical columns: แสดง boxplot ของ Purchase Amount ตาม category
-    sns.boxplot(x=selected_column, y='Purchase Amount', data=df)
-    plt.xticks(rotation=45)
-    plt.ylabel('Purchase Amount (USD)')
-    plt.xlabel(selected_column)
+    plt.figure(figsize=(12,6))
+    if selected_column in ['Age', 'Size', 'Season', 'Purchase Amount']:
+        sns.boxplot(y=df[selected_column])
+        plt.ylabel(selected_column)
+    else:
+        sns.boxplot(x=selected_column, y='Purchase Amount', data=df)
+        plt.xticks(rotation=45)
+        plt.ylabel('Purchase Amount (USD)')
+        plt.xlabel(selected_column)
 
-st.pyplot(plt)
+    st.pyplot(plt)
 
