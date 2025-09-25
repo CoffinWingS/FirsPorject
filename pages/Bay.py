@@ -13,6 +13,22 @@ def run_bayes():
     df = pd.read_csv("./data/shopping.csv")
     st.write(df.head(10))
 
+     # =========================
+    # Boxplot Explorer
+    # =========================
+    st.subheader("📊 Boxplot Explorer")
+    box_columns = ['Age', 'Size', 'Season', 'Location', 'Shipping Type', 'Item Purchased']
+    selected_column = st.selectbox("เลือกตัวแปรเพื่อดู Boxplot", box_columns)
+
+    plt.figure(figsize=(10,6))
+    if selected_column in ['Age', 'Size', 'Season']:
+        sns.boxplot(y=df[selected_column])
+    else:
+        sns.boxplot(x=df[selected_column].astype('category').cat.codes)
+    plt.xticks(rotation=45)
+    st.pyplot(plt)
+
+
     # เตรียม Features และ Target
     X = df.drop('Category', axis=1)
     y = df['Category']
