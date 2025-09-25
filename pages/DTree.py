@@ -3,6 +3,7 @@ import streamlit as st
 from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
@@ -11,9 +12,30 @@ gender_map = {1: 'Male', 2: 'Female'}
 size_map = {1: 'S', 2: 'M', 3: 'L', 4: 'XL'}
 season_map = {1: 'Winter', 2: 'Spring', 3: 'Summer', 4: 'Fall'}
 
-st.header("Decision Tree for classification")
+st.header("Decision Tree for Classification")
 df = pd.read_csv("./data/shopping.csv")
 st.write(df.head(10))
+
+# ====== Boxplot Section ======
+st.subheader("📊 Boxplot Visualization of Features")
+numeric_features = ['Age', 'Size', 'Purchase Amount']
+categorical_features = ['Item Purchased', 'Location', 'Season', 'Shipping Type']
+
+# Numeric Features
+for col in numeric_features:
+    fig, ax = plt.subplots(figsize=(6,4))
+    sns.boxplot(y=df[col], ax=ax)
+    ax.set_title(f'Boxplot of {col}')
+    st.pyplot(fig)
+
+# Categorical Features (ใช้ Purchase Amount เป็นแกน y)
+for col in categorical_features:
+    if col in df.columns:  # เช็คว่ามีคอลัมน์นี้ใน DataFrame
+        fig, ax = plt.subplots(figsize=(8,4))
+        sns.boxplot(x=df[col], y=df['Purchase Amount'], ax=ax)
+        ax.set_title(f'Boxplot of Purchase Amount by {col}')
+        plt.xticks(rotation=45)
+        st.pyplot(fig)
 
 # ====== เตรียม Features และ Target ======
 X = df.drop('Category', axis=1)
@@ -24,11 +46,10 @@ X = pd.get_dummies(X)
 
 # แบ่ง train/test
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=200)
+
 # ====== ตรวจสอบ distribution ของ target ======
 st.subheader("Class Distribution")
 st.write(y.value_counts())   # ดูจำนวนแต่ละคลาส
-
-
 
 # ====== สร้างและเทรนโมเดล ======
 ModelDtree = DecisionTreeClassifier()
@@ -56,7 +77,7 @@ if st.button("Debug Input"):
     st.write("🔍 Input data after processing:")
     st.write(input_data)
 
-
+# ====== Prediction ======
 if st.button("พยากรณ์"):
     # แปลงตัวเลขที่ user กรอก -> ค่า string จริง
     gender_val = gender_map[f2]
@@ -73,14 +94,15 @@ if st.button("พยากรณ์"):
 
     # ทำนายผล
     y_predict2 = dtree.predict(input_data)
-    st.write("ผลการพยากรณ์:", y_predict2[0])
+    st.write("🎯 ผลการพยากรณ์:", y_predict2[0])
 
 # ====== Accuracy ======
 y_predict = dtree.predict(x_test)
 score = accuracy_score(y_test, y_predict)
-st.write(f'ความแม่นยำในการพยากรณ์ {score*100:.2f} %')
+st.write(f'✅ ความแม่นยำในการพยากรณ์ {score*100:.2f} %')
 
 # ====== Plot Tree ======
 fig, ax = plt.subplots(figsize=(12, 8))
 tree.plot_tree(dtree, feature_names=X.columns, class_names=y.unique(), filled=True, ax=ax)
 st.pyplot(fig)
+
