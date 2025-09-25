@@ -14,7 +14,24 @@ def run_knn():
     df = pd.read_csv("./data/shopping.csv")
     st.write(df.head(10))
 
+    # =========================
+    # Boxplot Explorer
+    # =========================
+    st.subheader("📊 Boxplot Explorer")
+    box_columns = ['Age', 'Size', 'Season', 'Purchase Amount', 'Location', 'Shipping Type', 'Item Purchased']
+    selected_column = st.selectbox("เลือกตัวแปรเพื่อดู Boxplot", box_columns)
+
+    plt.figure(figsize=(12,6))
+    if selected_column in ['Age', 'Size', 'Season', 'Purchase Amount']:
+        sns.boxplot(y=df[selected_column])
+    else:
+        sns.boxplot(x=selected_column, y='Purchase Amount', data=df)
+        plt.xticks(rotation=45)
+    st.pyplot(plt)
+
+    # =========================
     # เตรียม Features และ Target
+    # =========================
     X = df.drop('Category', axis=1)
     y = df['Category']
 
@@ -28,7 +45,9 @@ def run_knn():
     knn = KNeighborsClassifier(n_neighbors=3)
     knn.fit(x_train, y_train)
 
+    # =========================
     # Input จากผู้ใช้
+    # =========================
     st.subheader("กรุณาป้อนข้อมูลเพื่อพยากรณ์ (ทดสอบ)")
 
     f1 = st.number_input('Age', min_value=1, max_value=100, value=25)
@@ -60,7 +79,9 @@ def run_knn():
     ]
     f7 = st.selectbox("Item Purchased", item_list)
 
-    # เมื่อกดปุ่มพยากรณ์
+    # =========================
+    # การพยากรณ์
+    # =========================
     if st.button("พยากรณ์"):
         input_data = pd.DataFrame([[f1, f2, f3, f4, f5, f6, f7]],
                                   columns=['Age','Size','Season','Purchase Amount','Location','Shipping Type','Item Purchased'])
@@ -72,34 +93,20 @@ def run_knn():
         y_predict = knn.predict(input_data)
         st.write("🎯 ผลการพยากรณ์:", y_predict[0])
 
+    # =========================
     # Accuracy
+    # =========================
     y_pred = knn.predict(x_test)
     score = accuracy_score(y_test, y_pred)
     st.write(f'✅ ความแม่นยำในการพยากรณ์ {score*100:.2f} %')
 
+    # =========================
     # Confusion Matrix
+    # =========================
     cm = confusion_matrix(y_test, y_pred, labels=knn.classes_)
     fig, ax = plt.subplots(figsize=(6,4))
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=knn.classes_)
     disp.plot(ax=ax, cmap="Blues", colorbar=False)
     st.pyplot(fig)
 
-    # =========================
-# Boxplot Explorer
-# =========================
-st.subheader("📊 Boxplot Explorer")
-box_columns = ['Age', 'Size', 'Season', 'Purchase Amount', 'Location', 'Shipping Type', 'Item Purchased']
-selected_column = st.selectbox("เลือกตัวแปรเพื่อดู Boxplot", box_columns)
-
-plt.figure(figsize=(12,6))
-
-if selected_column in ['Age', 'Size', 'Season', 'Purchase Amount']:
-    # plot ปกติ
-    sns.boxplot(y=df[selected_column])
-else:
-    # plot categorical แสดง Purchase Amount ตาม category
-    sns.boxplot(x=selected_column, y='Purchase Amount', data=df)
-    plt.xticks(rotation=45)
-
-st.pyplot(plt)
 
