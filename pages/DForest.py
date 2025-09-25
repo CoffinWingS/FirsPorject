@@ -12,6 +12,9 @@ st.header("🧥Random Forest for Classification🧥")
 df = pd.read_csv("./data/shopping.csv")
 st.write(df.head(10))
 
+def run_Forest():
+    st.header("Forest Prediction")
+
 # ====== เตรียม Features และ Target ======
 X = df.drop('Category', axis=1)
 y = df['Category']
