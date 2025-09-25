@@ -13,6 +13,14 @@ def run_dforest():
     df = pd.read_csv("./data/shopping.csv")
     st.write(df.head(10))
 
+
+    # เตรียม Features และ Target
+    X = df.drop('Category', axis=1)
+    y = df['Category']
+
+    # one-hot encoding
+    X = pd.get_dummies(X)
+
      # =========================
     # Boxplot Explorer
     # =========================
@@ -27,14 +35,6 @@ def run_dforest():
         sns.boxplot(x=df[selected_column].astype('category').cat.codes)
     plt.xticks(rotation=45)
     st.pyplot(plt)
-
-
-    # เตรียม Features และ Target
-    X = df.drop('Category', axis=1)
-    y = df['Category']
-
-    # one-hot encoding
-    X = pd.get_dummies(X)
 
     # แบ่ง train/test
     x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=200)
