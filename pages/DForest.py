@@ -37,30 +37,26 @@ def run_dforest():
     purchase_amount = st.number_input('Purchase Amount (USD)', min_value=1, value=50)
 
     # Location
-locations = [
-    "Kentucky","Maine","Massachusetts","Rhode Island","Oregon","Wyoming","Montana","Louisiana","West Virginia",
-    "Missouri","Arkansas","Hawaii","Delaware","New Hampshire","New York","Alabama","Mississippi","North Carolina",
-    "California","Oklahoma","Florida","Texas","Nevada","Kansas","Colorado","North Dakota","Illinois","Indiana",
-    "Arizona","Alaska","Tennessee","Ohio","New Jersey","Maryland","Vermont","New Mexico","South Carolina",
-    "Idaho","Pennsylvania","Connecticut","Utah","Virginia","Georgia","Nebraska","Iowa"
-]
-f5 = st.number_input('Location (1=Kentucky, 2=Maine, ...)', min_value=1, max_value=len(locations), value=1)
-location = locations[f5-1]  # แปลงเลขเป็นชื่อ
+    locations = [
+        "Kentucky","Maine","Massachusetts","Rhode Island","Oregon","Wyoming","Montana","Louisiana","West Virginia",
+        "Missouri","Arkansas","Hawaii","Delaware","New Hampshire","New York","Alabama","Mississippi","North Carolina",
+        "California","Oklahoma","Florida","Texas","Nevada","Kansas","Colorado","North Dakota","Illinois","Indiana",
+        "Arizona","Alaska","Tennessee","Ohio","New Jersey","Maryland","Vermont","New Mexico","South Carolina",
+        "Idaho","Pennsylvania","Connecticut","Utah","Virginia","Georgia","Nebraska","Iowa"
+    ]
+    location = st.selectbox("เลือก Location", locations)
 
-# Shipping Type
-shipping_types = ["Free Shipping", "Express", "Store Pickup", "2-Day Shipping", "Next Day Air", "Standard"]
-f6 = st.number_input('Shipping Type (1=Free Shipping, 2=Express, ...)', min_value=1, max_value=len(shipping_types), value=1)
-shipping_type = shipping_types[f6-1]
+    # Shipping Type
+    shipping_types = ["Free Shipping", "Express", "Store Pickup", "2-Day Shipping", "Next Day Air", "Standard"]
+    shipping_type = st.selectbox("เลือก Shipping Type", shipping_types)
 
-# Item Purchased
-items = [
-    "Pants","Dress","Coat","Jacket","Scarf","Skirt","Handbag","T-shirt","Hoodie","Shoes","Shorts","Jewelry",
-    "Sneakers","Sweater","Blouse","Shirt","Belt","Hat","Sunglasses","Gloves","Backpack","Jeans","Boots",
-    "Socks","Sandals"
-]
-f7 = st.number_input('Item Purchased (1=Pants, 2=Dress, ...)', min_value=1, max_value=len(items), value=1)
-item_purchased = items[f7-1]
-
+    # Item Purchased
+    items = [
+        "Pants","Dress","Coat","Jacket","Scarf","Skirt","Handbag","T-shirt","Hoodie","Shoes","Shorts","Jewelry",
+        "Sneakers","Sweater","Blouse","Shirt","Belt","Hat","Sunglasses","Gloves","Backpack","Jeans","Boots",
+        "Socks","Sandals"
+    ]
+    item_purchased = st.selectbox("เลือก Item Purchased", items)
 
     # เมื่อกดปุ่มพยากรณ์
     if st.button("พยากรณ์"):
