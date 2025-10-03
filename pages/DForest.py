@@ -10,6 +10,12 @@ import seaborn as sns
 def run_dforest():
     st.header("🧥 Random Forest for Classification 🧥")
 
+    # =========================
+    # แสดงรูปภาพ
+    # =========================
+    st.image("./img/shirt.jpg", caption="ตัวอย่างสินค้า", use_column_width=True)
+    st.image("./img/sell.jpg", caption="โปรโมชั่นขาย", use_column_width=True)
+
     # โหลดข้อมูล
     df = pd.read_csv("./data/shopping.csv")
     st.write(df.head(10))
@@ -36,33 +42,30 @@ def run_dforest():
     f3 = st.number_input('Season (1=Winter, 2=Spring, 3=Summer, 4=Fall)', min_value=1, max_value=4, value=3)
     purchase_amount = st.number_input('Purchase Amount (USD)', min_value=1, value=50)
 
-    # Location
-    locations = [
-        "Kentucky","Maine","Massachusetts","Rhode Island","Oregon","Wyoming","Montana","Louisiana","West Virginia",
-        "Missouri","Arkansas","Hawaii","Delaware","New Hampshire","New York","Alabama","Mississippi","North Carolina",
-        "California","Oklahoma","Florida","Texas","Nevada","Kansas","Colorado","North Dakota","Illinois","Indiana",
-        "Arizona","Alaska","Tennessee","Ohio","New Jersey","Maryland","Vermont","New Mexico","South Carolina",
-        "Idaho","Pennsylvania","Connecticut","Utah","Virginia","Georgia","Nebraska","Iowa"
-    ]
-    location = st.selectbox("เลือก Location", locations)
+    # Location เป็นตัวเลข
+    location_list = sorted(df['Location'].unique())
+    loc_dict = {name: idx+1 for idx, name in enumerate(location_list)}
+    f4 = st.number_input(f"Location (1-{len(location_list)})", min_value=1, max_value=len(location_list), value=1)
 
-    # Shipping Type
-    shipping_types = ["Free Shipping", "Express", "Store Pickup", "2-Day Shipping", "Next Day Air", "Standard"]
-    shipping_type = st.selectbox("เลือก Shipping Type", shipping_types)
+    # Shipping Type เป็นตัวเลข
+    shipping_list = sorted(df['Shipping Type'].unique())
+    ship_dict = {name: idx+1 for idx, name in enumerate(shipping_list)}
+    f5 = st.number_input(f"Shipping Type (1-{len(shipping_list)})", min_value=1, max_value=len(shipping_list), value=1)
 
-    # Item Purchased
-    items = [
-        "Pants","Dress","Coat","Jacket","Scarf","Skirt","Handbag","T-shirt","Hoodie","Shoes","Shorts","Jewelry",
-        "Sneakers","Sweater","Blouse","Shirt","Belt","Hat","Sunglasses","Gloves","Backpack","Jeans","Boots",
-        "Socks","Sandals"
-    ]
-    item_purchased = st.selectbox("เลือก Item Purchased", items)
+    # Item Purchased เป็นตัวเลข
+    item_list = sorted(df['Item Purchased'].unique())
+    item_dict = {name: idx+1 for idx, name in enumerate(item_list)}
+    f6 = st.number_input(f"Item Purchased (1-{len(item_list)})", min_value=1, max_value=len(item_list), value=1)
+
+    # แปลงตัวเลขกลับเป็นชื่อเพื่อ one-hot encoding
+    location_val = [k for k,v in loc_dict.items() if v==f4][0]
+    shipping_val = [k for k,v in ship_dict.items() if v==f5][0]
+    item_val = [k for k,v in item_dict.items() if v==f6][0]
 
     # เมื่อกดปุ่มพยากรณ์
     if st.button("พยากรณ์"):
-        input_data = pd.DataFrame([[
-            f1, f2, f3, purchase_amount, location, shipping_type, item_purchased
-        ]], columns=['Age','Size','Season','Purchase Amount','Location','Shipping Type','Item Purchased'])
+        input_data = pd.DataFrame([[f1, f2, f3, purchase_amount, location_val, shipping_val, item_val]],
+                                  columns=['Age','Size','Season','Purchase Amount','Location','Shipping Type','Item Purchased'])
 
         # one-hot encode input และ align columnsกับ X
         input_data = pd.get_dummies(input_data)
