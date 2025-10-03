@@ -15,9 +15,9 @@ def run_dforest():
     # =========================
     # แสดงรูปคู่กัน
     col1, col2 = st.columns(2)
-    with col1:
+with col1:
     st.image("./img/shirt.jpg", caption="Shirt Example", use_container_width=True)
-    with col2:
+with col2:
     st.image("./img/sell.jpg", caption="Sales Promotion", use_container_width=True)
 
 
