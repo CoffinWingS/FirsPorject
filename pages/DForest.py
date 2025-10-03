@@ -13,7 +13,8 @@ def run_dforest():
     # โหลดข้อมูล
     df = pd.read_csv("./data/shopping.csv")
     st.write(df.head(10))
-
+    st.image("./img/shirt.jpg", caption="Shirt Example", use_column_width=True)
+    st.image("./img/sell.jpg", caption="Sales Promotion", use_column_width=True)
     # เตรียม Features และ Target
     X = df.drop('Category', axis=1)
     y = df['Category']
